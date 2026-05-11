@@ -19,7 +19,9 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "multer": "^2.1.1"
   }
 }
