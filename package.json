@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "migrate": "node-pg-migrate"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,11 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.22.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "express": "^5.1.0",
-    "multer": "^2.1.1"
+    "multer": "^2.1.1",
+    "nanoid": "^3.3.12",
+    "node-pg-migrate": "^8.0.4",
+    "pg": "^8.20.0"
   }
 }

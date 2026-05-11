@@ -1,12 +1,15 @@
+import 'dotenv/config';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import tf from '@tensorflow/tfjs-node';
 import metadata from '../model/metadata.json' with { type: 'json' };
+import { nanoid } from 'nanoid';
+import { Pool } from 'pg';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export async function predictImage(photo) {
+export async function predictImage(photo, photoName) {
   const modelPath = `file://${resolve(__dirname, '..', 'model', 'model.json')}`;
   const model = await tf.loadLayersModel(modelPath);
 
@@ -24,5 +27,26 @@ export async function predictImage(photo) {
   const diseaseLabels = metadata.labels;
   const diseaseLabel = diseaseLabels[label];
 
+  const pool = new Pool();
+  const id = `PRD-${nanoid(4)}`;
+
+  const query = {
+    text: 'INSERT INTO predictions(id, image, label, confidence) VALUES ($1, $2, $3, $4)',
+    values: [id, photoName, diseaseLabel, confidenceScore]
+  };
+
+  await pool.query(query);
+
   return { confidenceScore, diseaseLabel };
+}
+
+export async function getPredictions() {
+  const pool = new Pool();
+
+  const query = {
+    text: 'SELECT * from predictions'
+  };
+
+  const result = await pool.query(query);
+  return result.rows;
 }
