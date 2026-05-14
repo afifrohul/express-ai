@@ -8,6 +8,7 @@ import { Pool } from 'pg';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const pool = new Pool();
 
 export async function predictImage(photo, photoName) {
   const modelPath = `file://${resolve(__dirname, '..', 'model', 'model.json')}`;
@@ -27,7 +28,6 @@ export async function predictImage(photo, photoName) {
   const diseaseLabels = metadata.labels;
   const diseaseLabel = diseaseLabels[label];
 
-  const pool = new Pool();
   const id = `PRD-${nanoid(4)}`;
 
   const query = {
@@ -41,8 +41,6 @@ export async function predictImage(photo, photoName) {
 }
 
 export async function getPredictions() {
-  const pool = new Pool();
-
   const query = {
     text: 'SELECT * from predictions'
   };
